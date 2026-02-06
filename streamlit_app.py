@@ -9,4 +9,14 @@ st.set_page_config(
 )
 
 st.title("Canadian Large-Cap Stock Technical Analysis")
-st.markdown("Use the sidebar to navigate between pages.")
+st.markdown("""
+Navigate using the sidebar:
+
+- **Live Signals** — Current indicator readings and recent signals for all 25 stocks
+- **Stock Detail** — Deep dive into individual stocks with interactive charts
+- **Backtest Results** — Strategy performance comparison and equity curves
+- **Sector Analysis** — Sector groupings, comparative performance, and correlations
+""")
+
+st.divider()
+st.caption("Run `python main.py` to fetch data and generate analysis before using the dashboard.")
