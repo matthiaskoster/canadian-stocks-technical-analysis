@@ -2,9 +2,12 @@ name: Update Stock Data
 
 on:
   schedule:
-    # Run daily at 1:00 AM UTC (8 PM ET) — after market close
-    - cron: "0 1 * * 1-5"
+    # Run weekdays at 21:20 UTC (4:20 PM EST) — 20 min after market close
+    - cron: "20 21 * * 1-5"
   workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
 
 jobs:
   update-data:
