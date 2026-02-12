@@ -40,7 +40,7 @@ OTHER = {
     "FNV.TO": "Franco-Nevada",
     "CSU.TO": "Constellation Software",
     "ATD.TO": "Alimentation Couche-Tard",
-    "WCN.TO": "Waste Connections",
+    "WCP.TO": "Whitecap Resources",
 }
 
 ALL_STOCKS = {**BANKS, **ENERGY, **OTHER}
@@ -54,6 +54,26 @@ for t in ENERGY:
 for t in OTHER:
     SECTORS[t] = "Other"
 
+# Commodity tickers (fetched into stock_prices table alongside stocks)
+COMMODITIES = {
+    "GC=F": "Gold",
+    "SI=F": "Silver",
+    "HG=F": "Copper",
+    "CL=F": "WTI Crude Oil",
+    "NG=F": "Natural Gas",
+    "BTC-USD": "Bitcoin",
+    "U-UN.TO": "Uranium (Sprott Physical)",
+}
+
+COMMODITY_TICKERS = list(COMMODITIES.keys())
+
+# Map commodities to related Canadian stocks for overlay charts
+COMMODITY_STOCK_MAP = {
+    "GC=F": ["ABX.TO", "FNV.TO"],
+    "CL=F": ["CNQ.TO", "SU.TO", "CVE.TO", "IMO.TO"],
+    "NG=F": ["ENB.TO", "TRP.TO", "PPL.TO"],
+}
+
 # Indicator parameters
 EMA_PERIODS = [5, 10, 20, 50, 200]
 SMA_PERIODS = [50, 200]
@@ -62,11 +82,24 @@ MACD_FAST = 12
 MACD_SLOW = 26
 MACD_SIGNAL = 9
 VWAP_LOOKBACK = 20
+ATR_PERIOD = 14
+BB_PERIOD = 20
+BB_STD = 2
+ADX_PERIOD = 14
+STOCH_K_PERIOD = 14
+STOCH_D_PERIOD = 3
 
 # RSI thresholds
 RSI_OVERSOLD = 30
 RSI_OVERBOUGHT = 70
 RSI_MIDLINE = 50
+
+# FRED macro series
+FRED_SERIES = {
+    "DCOILWTICO": "WTI Crude Oil (USD/barrel)",
+    "DEXCAUS": "USD/CAD Exchange Rate",
+    "DGS10": "US 10-Year Treasury Yield",
+}
 
 # Backtesting
 INITIAL_CAPITAL = 10000

@@ -3,8 +3,9 @@
 import pandas as pd
 
 from indicators.moving_averages import calculate_emas, calculate_smas
-from indicators.momentum import calculate_rsi, calculate_macd
-from indicators.volume import calculate_vwap
+from indicators.momentum import calculate_rsi, calculate_macd, calculate_stochastic
+from indicators.volume import calculate_vwap, calculate_obv
+from indicators.volatility import calculate_atr, calculate_bollinger_bands, calculate_adx
 
 
 def calculate_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
@@ -19,4 +20,9 @@ def calculate_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
     df = calculate_rsi(df)
     df = calculate_macd(df)
     df = calculate_vwap(df)
+    df = calculate_atr(df)
+    df = calculate_bollinger_bands(df)
+    df = calculate_adx(df)
+    df = calculate_obv(df)
+    df = calculate_stochastic(df)
     return df

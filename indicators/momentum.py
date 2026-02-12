@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from config import RSI_PERIODS, MACD_FAST, MACD_SLOW, MACD_SIGNAL
+from config import RSI_PERIODS, MACD_FAST, MACD_SLOW, MACD_SIGNAL, STOCH_K_PERIOD, STOCH_D_PERIOD
 
 
 def calculate_rsi(df: pd.DataFrame) -> pd.DataFrame:
@@ -35,4 +35,13 @@ def calculate_macd(df: pd.DataFrame) -> pd.DataFrame:
     df["macd_signal"] = df["macd"].ewm(span=MACD_SIGNAL, adjust=False).mean()
     df["macd_histogram"] = df["macd"] - df["macd_signal"]
 
+    return df
+
+
+def calculate_stochastic(df: pd.DataFrame) -> pd.DataFrame:
+    """Stochastic Oscillator %K and %D."""
+    low_min = df["Low"].rolling(window=STOCH_K_PERIOD).min()
+    high_max = df["High"].rolling(window=STOCH_K_PERIOD).max()
+    df["stoch_k"] = 100 * (df["Close"] - low_min) / (high_max - low_min)
+    df["stoch_d"] = df["stoch_k"].rolling(window=STOCH_D_PERIOD).mean()
     return df

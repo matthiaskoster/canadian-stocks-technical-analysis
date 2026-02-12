@@ -16,6 +16,8 @@ Navigate using the sidebar:
 - **Stock Detail** — Deep dive into individual stocks with interactive charts
 - **Backtest Results** — Strategy performance comparison and equity curves
 - **Sector Analysis** — Sector groupings, comparative performance, and correlations
+- **Explanations** — Reference guide for all metrics, indicators, and signal types
+- **Insider Trading** — Insider buy/sell activity across all tracked stocks
 """)
 
 st.divider()

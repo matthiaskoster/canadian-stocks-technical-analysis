@@ -20,3 +20,10 @@ def calculate_vwap(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     return df
+
+
+def calculate_obv(df: pd.DataFrame) -> pd.DataFrame:
+    """On-Balance Volume — cumulative volume weighted by price direction."""
+    sign = df["Close"].diff().apply(lambda x: 1 if x > 0 else (-1 if x < 0 else 0))
+    df["obv"] = (sign * df["Volume"]).cumsum()
+    return df
