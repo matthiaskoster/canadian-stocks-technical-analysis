@@ -155,12 +155,15 @@ def fetch_earnings_date(ticker: str) -> str | None:
         return None
 
 
-def fetch_fred_series(series_id: str, api_key: str) -> pd.DataFrame | None:
-    """Fetch a FRED time series. Returns DataFrame with date index and value column."""
+def fetch_fred_series(series_id: str, api_key: str, start_date: str = None) -> pd.DataFrame | None:
+    """Fetch a FRED time series. Returns DataFrame with date index and value column.
+
+    If start_date is provided (YYYY-MM-DD), only fetches observations from that date onward.
+    """
     try:
         from fredapi import Fred
         fred = Fred(api_key=api_key)
-        s = fred.get_series(series_id)
+        s = fred.get_series(series_id, observation_start=start_date)
         if s is None or s.empty:
             return None
         df = s.to_frame(name="value")
@@ -175,12 +178,19 @@ def fetch_fred_series(series_id: str, api_key: str) -> pd.DataFrame | None:
         return None
 
 
-def fetch_boc_rate() -> pd.DataFrame | None:
-    """Fetch Bank of Canada overnight rate from the BoC Valet API."""
+def fetch_boc_rate(start_date: str = None) -> pd.DataFrame | None:
+    """Fetch Bank of Canada overnight rate from the BoC Valet API.
+
+    If start_date is provided (YYYY-MM-DD), only fetches observations from that date onward.
+    Otherwise fetches the last 260 observations.
+    """
     import urllib.request
     import json
 
-    url = "https://www.bankofcanada.ca/valet/observations/V39079/json?recent=260"
+    if start_date:
+        url = f"https://www.bankofcanada.ca/valet/observations/V39079/json?start_date={start_date}"
+    else:
+        url = "https://www.bankofcanada.ca/valet/observations/V39079/json?recent=260"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "DMAtracker/1.0"})
         with urllib.request.urlopen(req, timeout=15) as resp:

@@ -8,7 +8,7 @@ from dashboard.components.tables import (
     style_rsi, style_direction, style_macd_status, style_return,
     format_pct, format_price, get_ma_distance, get_macd_status, get_vwap_position,
 )
-from config import ALL_STOCKS, SECTORS
+from config import ALL_STOCKS, SECTORS, SECTOR_NAMES
 
 st.set_page_config(page_title="Live Signals", page_icon="📈", layout="wide")
 st.title("Live Signals")
@@ -34,7 +34,7 @@ if prices.empty:
 # Build overview table
 st.subheader("Stock Overview")
 
-sector_filter = st.multiselect("Filter by sector", ["Banks", "Energy", "Other"], default=["Banks", "Energy", "Other"])
+sector_filter = st.multiselect("Filter by sector", SECTOR_NAMES, default=SECTOR_NAMES)
 
 rows = []
 for _, price_row in prices.iterrows():

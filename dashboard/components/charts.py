@@ -14,6 +14,7 @@ def create_candlestick_chart(
     show_emas: bool = True,
     show_smas: bool = True,
     show_vwap: bool = True,
+    show_bb: bool = False,
     height: int = 600,
 ) -> go.Figure:
     """Create a candlestick chart with optional MA overlays and signal markers."""
@@ -63,6 +64,25 @@ def create_candlestick_chart(
                 name="VWAP 20",
                 line=dict(width=1.5, dash="dot", color=ma_colors["vwap_20"]),
             ))
+
+        if show_bb and "bb_upper" in indicators.columns and "bb_lower" in indicators.columns:
+            fig.add_trace(go.Scatter(
+                x=indicators["date"], y=indicators["bb_upper"],
+                name="BB Upper",
+                line=dict(width=1, color="rgba(174,213,129,0.6)"),
+            ))
+            fig.add_trace(go.Scatter(
+                x=indicators["date"], y=indicators["bb_lower"],
+                name="BB Lower",
+                line=dict(width=1, color="rgba(174,213,129,0.6)"),
+                fill="tonexty", fillcolor="rgba(174,213,129,0.08)",
+            ))
+            if "bb_middle" in indicators.columns:
+                fig.add_trace(go.Scatter(
+                    x=indicators["date"], y=indicators["bb_middle"],
+                    name="BB Middle",
+                    line=dict(width=1, dash="dot", color="rgba(174,213,129,0.4)"),
+                ))
 
     if signals is not None and not signals.empty:
         bull = signals[signals["direction"] == "bullish"]
@@ -204,7 +224,10 @@ def create_sector_comparison(perf_df: pd.DataFrame, metric: str = "total_return"
 
     sector_avg = perf_df.groupby("sector")[metric].mean().sort_values(ascending=False)
 
-    colors = {"Banks": "#2196f3", "Energy": "#ff9800", "Other": "#9c27b0"}
+    colors = {
+        "Banks": "#2196f3", "Oil & Gas": "#ff9800", "Pipelines": "#ff5722",
+        "Utilities": "#4caf50", "Other": "#9c27b0",
+    }
 
     fig.add_trace(go.Bar(
         x=sector_avg.index,

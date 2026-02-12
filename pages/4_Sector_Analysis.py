@@ -8,7 +8,7 @@ from dashboard.components.charts import (
     create_sector_comparison, create_correlation_heatmap,
 )
 from dashboard.components.tables import style_return
-from config import SECTORS, ALL_STOCKS, BANKS, ENERGY, OTHER
+from config import SECTORS, ALL_STOCKS, SECTOR_GROUPS, SECTOR_NAMES
 
 st.set_page_config(page_title="Sector Analysis", page_icon="📈", layout="wide")
 st.title("Sector Analysis")
@@ -48,10 +48,9 @@ st.plotly_chart(fig_sector, use_container_width=True)
 # Sector breakdown tables
 st.subheader("Sector Breakdown")
 
-tabs = st.tabs(["Banks", "Energy", "Other"])
-sector_groups = [("Banks", BANKS), ("Energy", ENERGY), ("Other", OTHER)]
+tabs = st.tabs(SECTOR_NAMES)
 
-for tab, (sector_name, sector_dict) in zip(tabs, sector_groups):
+for tab, (sector_name, sector_dict) in zip(tabs, SECTOR_GROUPS):
     with tab:
         sector_perf = perf_filtered[perf_filtered["ticker"].isin(sector_dict.keys())]
         if sector_perf.empty:
@@ -83,20 +82,13 @@ for tab, (sector_name, sector_dict) in zip(tabs, sector_groups):
         }, na_rep="—")
         st.dataframe(styled, use_container_width=True)
 
-        # Sector insights
-        if sector_name == "Banks":
-            st.caption("Banks tend to be mean-reverting. RSI-based strategies often work well.")
-        elif sector_name == "Energy":
-            st.caption("Energy stocks are trend-following. MA crossover strategies tend to outperform.")
-        else:
-            st.caption("Other sectors show mixed characteristics. Combined strategies may offer best risk-adjusted returns.")
-
 # Correlation matrix
 st.subheader("Return Correlation Matrix")
 
-sector_corr = st.radio("Sector", ["All", "Banks", "Energy", "Other"], horizontal=True, key="corr_sector")
+sector_corr = st.radio("Sector", ["All"] + SECTOR_NAMES, horizontal=True, key="corr_sector")
 
-sector_map = {"Banks": BANKS, "Energy": ENERGY, "Other": OTHER, "All": ALL_STOCKS}
+sector_map = {name: d for name, d in SECTOR_GROUPS}
+sector_map["All"] = ALL_STOCKS
 corr_tickers = list(sector_map[sector_corr].keys())
 
 if not all_prices.empty:

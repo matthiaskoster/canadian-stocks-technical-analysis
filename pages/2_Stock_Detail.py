@@ -49,15 +49,17 @@ ind_view = indicators[indicators["date"].isin(prices_view["date"])] if not indic
 sig_view = signals[signals["date"].isin(prices_view["date"])] if not signals.empty else signals
 
 # Candlestick chart with overlays
-col_ema, col_sma, col_vwap = st.columns(3)
+col_ema, col_sma, col_vwap, col_bb = st.columns(4)
 show_emas = col_ema.checkbox("Show EMAs", value=True)
 show_smas = col_sma.checkbox("Show SMAs", value=True)
 show_vwap = col_vwap.checkbox("Show VWAP", value=True)
+show_bb = col_bb.checkbox("Show Bollinger Bands", value=False)
 
 fig_candle = create_candlestick_chart(
     prices_view, ind_view, sig_view,
     title=f"{selected} Price Chart",
     show_emas=show_emas, show_smas=show_smas, show_vwap=show_vwap,
+    show_bb=show_bb,
     height=500,
 )
 st.plotly_chart(fig_candle, use_container_width=True)
@@ -101,6 +103,36 @@ if not indicators.empty:
             st.metric("VWAP", f"${vwap:.2f}", "Above" if close > vwap else "Below")
         else:
             st.metric("VWAP", "—")
+
+    col_e, col_f, col_g, col_h = st.columns(4)
+    with col_e:
+        bb_u = latest.get("bb_upper")
+        bb_l = latest.get("bb_lower")
+        if pd.notna(bb_u) and pd.notna(bb_l):
+            st.metric("BB Upper", f"${bb_u:.2f}")
+            st.metric("BB Lower", f"${bb_l:.2f}")
+        else:
+            st.metric("Bollinger Bands", "—")
+    with col_f:
+        atr = latest.get("atr_14")
+        st.metric("ATR(14)", f"{atr:.2f}" if pd.notna(atr) else "—")
+    with col_g:
+        adx = latest.get("adx_14")
+        plus_di = latest.get("plus_di")
+        minus_di = latest.get("minus_di")
+        if pd.notna(adx):
+            st.metric("ADX(14)", f"{adx:.1f}", "Trending" if adx > 20 else "Weak")
+            st.metric("+DI / -DI", f"{plus_di:.1f} / {minus_di:.1f}" if pd.notna(plus_di) else "—")
+        else:
+            st.metric("ADX", "—")
+    with col_h:
+        stoch_k = latest.get("stoch_k")
+        stoch_d = latest.get("stoch_d")
+        if pd.notna(stoch_k):
+            zone = "Oversold" if stoch_k < 20 else ("Overbought" if stoch_k > 80 else "Neutral")
+            st.metric("Stoch %K / %D", f"{stoch_k:.1f} / {stoch_d:.1f}" if pd.notna(stoch_d) else f"{stoch_k:.1f}", zone)
+        else:
+            st.metric("Stochastic", "—")
 
 # Recent signals for this stock
 st.subheader("Recent Signals")

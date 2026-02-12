@@ -139,28 +139,42 @@ def run_pipeline(tickers: list[str], fetch: bool = True, force: bool = False):
                 if last == today and not force:
                     print(f"  {name}: up to date")
                     continue
-                print(f"  {name}: fetching from FRED...")
-                df = fetch_fred_series(series_id, fred_key)
+                start_date = None
+                if last and not force:
+                    start_date = (date.fromisoformat(last) + timedelta(days=1)).isoformat()
+                    print(f"  {name}: fetching from {start_date}...")
+                else:
+                    print(f"  {name}: fetching full history...")
+                df = fetch_fred_series(series_id, fred_key, start_date=start_date)
                 if df is not None:
                     store_macro(series_id, df)
                     log_fetch(series_id, "macro")
                     print(f"    {len(df)} data points")
                 else:
-                    print(f"    no data")
+                    if start_date:
+                        log_fetch(series_id, "macro")
+                    print(f"    no new data")
         else:
             print("  FRED_API key not found in .env.local, skipping FRED series")
 
         # Bank of Canada overnight rate
         last = get_last_fetch("BOC_OVERNIGHT", "macro")
         if last != today or force:
-            print("  BoC overnight rate: fetching...")
-            boc_df = fetch_boc_rate()
+            start_date = None
+            if last and not force:
+                start_date = (date.fromisoformat(last) + timedelta(days=1)).isoformat()
+                print(f"  BoC overnight rate: fetching from {start_date}...")
+            else:
+                print("  BoC overnight rate: fetching full history...")
+            boc_df = fetch_boc_rate(start_date=start_date)
             if boc_df is not None:
                 store_macro("BOC_OVERNIGHT", boc_df)
                 log_fetch("BOC_OVERNIGHT", "macro")
                 print(f"    {len(boc_df)} data points")
             else:
-                print(f"    no data")
+                if start_date:
+                    log_fetch("BOC_OVERNIGHT", "macro")
+                print(f"    no new data")
         else:
             print("  BoC overnight rate: up to date")
         print("Macro data done.")
