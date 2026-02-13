@@ -18,8 +18,8 @@ def fetch_stock_data(ticker: str, days: int = FETCH_DAYS, start_date: str | None
     Returns DataFrame with columns: Open, High, Low, Close, Volume
     indexed by naive date. Returns None if fetch fails.
     """
-    end = datetime.now()
-    start = datetime.fromisoformat(start_date) if start_date else end - timedelta(days=days)
+    end = datetime.now() + timedelta(days=1)  # yfinance end date is exclusive
+    start = datetime.fromisoformat(start_date) if start_date else end - timedelta(days=days + 1)
 
     try:
         stock = yf.Ticker(ticker)
