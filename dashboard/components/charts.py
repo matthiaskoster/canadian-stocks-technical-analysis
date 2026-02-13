@@ -226,7 +226,8 @@ def create_sector_comparison(perf_df: pd.DataFrame, metric: str = "total_return"
 
     colors = {
         "Banks": "#2196f3", "Oil & Gas": "#ff9800", "Pipelines": "#ff5722",
-        "Utilities": "#4caf50", "Other": "#9c27b0",
+        "Utilities": "#4caf50", "Tech": "#9c27b0", "Rails": "#795548",
+        "Telecom": "#00bcd4", "Mining": "#ffc107",
     }
 
     fig.add_trace(go.Bar(

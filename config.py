@@ -42,16 +42,25 @@ UTILITIES = {
     "CPX.TO": "Capital Power",
 }
 
-OTHER = {
+TECH = {
     "SHOP.TO": "Shopify",
+    "CSU.TO": "Constellation Software",
+    "CLS.TO": "Celestica",
+}
+
+RAILS = {
     "CP.TO": "Canadian Pacific Kansas City",
     "CNR.TO": "Canadian National Railway",
+}
+
+TELECOM = {
     "BCE.TO": "BCE Inc",
     "T.TO": "Telus",
+}
+
+MINING = {
     "ABX.TO": "Barrick Gold",
     "FNV.TO": "Franco-Nevada",
-    "CSU.TO": "Constellation Software",
-    "ATD.TO": "Alimentation Couche-Tard",
     "CCO.TO": "Cameco",
     "DML.TO": "Denison Mines",
 }
@@ -59,7 +68,7 @@ OTHER = {
 # Legacy alias so existing imports of ENERGY still work
 ENERGY = {**OIL_GAS, **PIPELINES}
 
-ALL_STOCKS = {**BANKS, **OIL_GAS, **PIPELINES, **UTILITIES, **OTHER}
+ALL_STOCKS = {**BANKS, **OIL_GAS, **PIPELINES, **UTILITIES, **TECH, **RAILS, **TELECOM, **MINING}
 TICKERS = list(ALL_STOCKS.keys())
 
 SECTORS = {}
@@ -71,15 +80,24 @@ for t in PIPELINES:
     SECTORS[t] = "Pipelines"
 for t in UTILITIES:
     SECTORS[t] = "Utilities"
-for t in OTHER:
-    SECTORS[t] = "Other"
+for t in TECH:
+    SECTORS[t] = "Tech"
+for t in RAILS:
+    SECTORS[t] = "Rails"
+for t in TELECOM:
+    SECTORS[t] = "Telecom"
+for t in MINING:
+    SECTORS[t] = "Mining"
 
 SECTOR_GROUPS = [
     ("Banks", BANKS),
     ("Oil & Gas", OIL_GAS),
     ("Pipelines", PIPELINES),
     ("Utilities", UTILITIES),
-    ("Other", OTHER),
+    ("Tech", TECH),
+    ("Rails", RAILS),
+    ("Telecom", TELECOM),
+    ("Mining", MINING),
 ]
 SECTOR_NAMES = [name for name, _ in SECTOR_GROUPS]
 

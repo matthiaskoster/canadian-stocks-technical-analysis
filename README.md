@@ -1,6 +1,6 @@
 # Canadian Large-Cap Stock Technical Analysis System
 
-A Python-based technical analysis backtesting system for 25 Canadian large-cap stocks. Fetches historical data, calculates indicators, detects trading signals, backtests strategies, and displays results in an interactive Streamlit dashboard.
+A Python-based technical analysis backtesting system for 32 Canadian large-cap stocks and 7 commodities. Fetches historical data, calculates indicators, detects trading signals, backtests 11 strategies, and displays results in an interactive Streamlit dashboard.
 
 ## Installation
 
@@ -15,17 +15,20 @@ pip install -r requirements.txt
 ### Run the analysis pipeline
 
 ```bash
-# All 25 stocks (fetches data + calculates everything)
-python main.py
+# All 32 stocks + 7 commodities (fetches data + calculates everything)
+python3 main.py
 
 # Single stock
-python main.py --ticker RY.TO
+python3 main.py --ticker RY.TO
 
 # Skip data fetching (use cached data)
-python main.py --no-fetch
+python3 main.py --no-fetch
 
 # Only fetch data, no analysis
-python main.py --fetch-only
+python3 main.py --fetch-only
+
+# Force full re-fetch
+python3 main.py --force
 ```
 
 ### Launch the dashboard
@@ -37,10 +40,10 @@ streamlit run streamlit_app.py
 ### Run tests
 
 ```bash
-python -m pytest tests/ -v
+python3 -m pytest tests/ -v
 ```
 
-## Stock Universe (25 stocks)
+## Stock Universe (32 stocks across 8 sectors)
 
 ### Banks (8)
 | Ticker | Name |
@@ -54,32 +57,70 @@ python -m pytest tests/ -v
 | MFC.TO | Manulife Financial |
 | SLF.TO | Sun Life Financial |
 
-### Energy (7)
+### Oil & Gas (8)
 | Ticker | Name |
 |--------|------|
 | CNQ.TO | Canadian Natural Resources |
 | SU.TO | Suncor Energy |
-| ENB.TO | Enbridge |
-| TRP.TO | TC Energy |
 | CVE.TO | Cenovus Energy |
 | IMO.TO | Imperial Oil |
+| WCP.TO | Whitecap Resources |
+| TOU.TO | Tourmaline Oil |
+| ARX.TO | ARC Resources |
+| PEY.TO | Peyto Exploration |
+
+### Pipelines (3)
+| Ticker | Name |
+|--------|------|
+| ENB.TO | Enbridge |
+| TRP.TO | TC Energy |
 | PPL.TO | Pembina Pipeline |
 
-### Other (10)
+### Utilities (2)
+| Ticker | Name |
+|--------|------|
+| EMA.TO | Emera |
+| CPX.TO | Capital Power |
+
+### Tech (3)
 | Ticker | Name |
 |--------|------|
 | SHOP.TO | Shopify |
+| CSU.TO | Constellation Software |
+| CLS.TO | Celestica |
+
+### Rails (2)
+| Ticker | Name |
+|--------|------|
 | CP.TO | Canadian Pacific Kansas City |
 | CNR.TO | Canadian National Railway |
+
+### Telecom (2)
+| Ticker | Name |
+|--------|------|
 | BCE.TO | BCE Inc |
 | T.TO | Telus |
+
+### Mining (4)
+| Ticker | Name |
+|--------|------|
 | ABX.TO | Barrick Gold |
 | FNV.TO | Franco-Nevada |
-| CSU.TO | Constellation Software |
-| ATD.TO | Alimentation Couche-Tard |
-| WCN.TO | Waste Connections |
+| CCO.TO | Cameco |
+| DML.TO | Denison Mines |
 
-## Strategies
+## Commodities (7)
+| Ticker | Name |
+|--------|------|
+| GC=F | Gold |
+| SI=F | Silver |
+| HG=F | Copper |
+| CL=F | WTI Crude Oil |
+| NG=F | Natural Gas |
+| BTC-USD | Bitcoin |
+| U-UN.TO | Uranium (Sprott Physical) |
+
+## Strategies (11)
 
 | Strategy | Entry | Exit |
 |----------|-------|------|
@@ -89,6 +130,11 @@ python -m pytest tests/ -v
 | **MACD** | MACD line crosses above signal line | MACD line crosses below signal line |
 | **VWAP** | Price crosses above 20-day VWAP | Price crosses below 20-day VWAP |
 | **Combined** | EMA 10 > EMA 50, RSI > 50, MACD histogram > 0, price > VWAP | Opposite conditions align |
+| **Bollinger Bands** | Price recovers above lower band | Price falls below upper band |
+| **ATR Breakout** | Close > prev close + 1.5×ATR | Close < prev close - 1.5×ATR |
+| **ADX DI Cross** | +DI crosses above -DI (ADX > 20) | -DI crosses above +DI (ADX > 20) |
+| **OBV Trend** | OBV crosses above its 20-EMA | OBV crosses below its 20-EMA |
+| **Stochastic** | %K crosses above %D below 20 | %K crosses below %D above 80 |
 
 Additional signal types detected (not backtested as standalone):
 - **Golden/Death Cross** — SMA 50/200 crossover with 3% pullback filter
@@ -96,20 +142,30 @@ Additional signal types detected (not backtested as standalone):
 
 ## Dashboard Pages
 
-1. **Live Signals** — Overview table of all 25 stocks with current price, MA distances, RSI, MACD status, VWAP position. Recent signals list.
-2. **Stock Detail** — Individual stock deep dive with candlestick chart, indicator overlays, signal markers, RSI and MACD subplots.
-3. **Backtest Results** — Strategy comparison tables, equity curves, win rate charts, rankings by Sharpe ratio.
-4. **Sector Analysis** — Sector groupings (Banks/Energy/Other), comparative performance, return correlation heatmap.
+1. **Live Signals** — Current indicator readings and recent signals for all 32 stocks
+2. **Stock Detail** — Individual stock deep dive with candlestick chart, Bollinger Bands overlay, indicator subplots
+3. **Backtest Results** — Strategy performance across 11 strategies with equity curves
+4. **Sector Analysis** — Performance by sector with correlation heatmap
+5. **Explanations** — Reference guide for all metrics, indicators, and signal types
+6. **Insider Trading** — Insider buy/sell activity across all tracked stocks
+7. **Commodities** — Gold, silver, copper, oil, natural gas, bitcoin, and uranium with related stock overlays
+8. **News & Calendar** — Latest news and upcoming earnings dates
+9. **Macro** — WTI crude, USD/CAD, US 10-year yield, and BoC overnight rate
 
 ## Technical Indicators
 
 All indicators are calculated from scratch using pandas (no ta/pandas_ta dependency):
 
-- **EMAs**: 5, 10, 20, 50, 200-day (`ewm(span=N)`)
-- **SMAs**: 50, 200-day (`rolling(N).mean()`)
-- **RSI**: 14 and 21-day using Wilder's smoothing (`ewm(alpha=1/period)`)
+- **EMAs**: 5, 10, 20, 50, 200-day
+- **SMAs**: 50, 200-day
+- **RSI**: 14 and 21-day using Wilder's smoothing
 - **MACD**: 12/26/9 standard configuration
-- **VWAP**: Rolling 20-day approximation using `sum(TP * Vol) / sum(Vol)`
+- **VWAP**: Rolling 20-day approximation
+- **Bollinger Bands**: 20-period, 2 std dev
+- **ATR**: 14-period Average True Range
+- **ADX**: 14-period with +DI/-DI
+- **Stochastic**: %K(14)/%D(3)
+- **OBV**: On-Balance Volume
 
 ## Project Structure
 
@@ -119,16 +175,22 @@ All indicators are calculated from scratch using pandas (no ta/pandas_ta depende
 ├── config.py                # Stock universe, parameters
 ├── requirements.txt
 ├── data/
-│   ├── data_fetcher.py      # yfinance data fetching
+│   ├── data_fetcher.py      # yfinance + FRED + BoC data fetching
 │   └── database.py          # SQLite storage layer
 ├── indicators/
 │   ├── moving_averages.py   # EMA, SMA
-│   ├── momentum.py          # RSI, MACD
-│   └── volume.py            # VWAP
+│   ├── momentum.py          # RSI, MACD, Stochastic
+│   ├── volume.py            # VWAP, OBV
+│   └── volatility.py        # ATR, Bollinger Bands, ADX
 ├── strategies/
 │   ├── ma_crossover.py      # MA crossover signals
 │   ├── rsi_strategy.py      # RSI + MACD signals
-│   └── combined_signals.py  # Multi-indicator signals
+│   ├── combined_signals.py  # Multi-indicator signals
+│   ├── bollinger_strategy.py
+│   ├── atr_strategy.py
+│   ├── adx_strategy.py
+│   ├── obv_strategy.py
+│   └── stochastic_strategy.py
 ├── backtesting/
 │   └── backtest_engine.py   # Trade simulation + metrics
 ├── dashboard/
@@ -139,7 +201,12 @@ All indicators are calculated from scratch using pandas (no ta/pandas_ta depende
 │   ├── 1_Live_Signals.py
 │   ├── 2_Stock_Detail.py
 │   ├── 3_Backtest_Results.py
-│   └── 4_Sector_Analysis.py
+│   ├── 4_Sector_Analysis.py
+│   ├── 5_Explanations.py
+│   ├── 6_Insider_Trading.py
+│   ├── 7_Commodities.py
+│   ├── 8_News_Calendar.py
+│   └── 9_Macro.py
 └── tests/
     ├── test_indicators.py
     ├── test_signals.py

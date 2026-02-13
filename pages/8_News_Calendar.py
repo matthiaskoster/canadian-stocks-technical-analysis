@@ -37,8 +37,14 @@ if not earnings_df.empty:
     earnings_display = earnings_display[["Ticker", "Name", "Sector", "Earnings Date"]]
     earnings_display = earnings_display.sort_values("Earnings Date")
 
-    # Highlight dates in the next 14 days
+    # Drop earnings more than 5 days before today
     today = pd.Timestamp.now().normalize()
+    cutoff = today - pd.Timedelta(days=5)
+    earnings_display = earnings_display[
+        pd.to_datetime(earnings_display["Earnings Date"]) >= cutoff
+    ]
+
+    # Highlight dates in the next 14 days
     two_weeks = today + pd.Timedelta(days=14)
 
     def style_upcoming(val):
