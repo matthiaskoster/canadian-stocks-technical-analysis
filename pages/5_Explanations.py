@@ -1,8 +1,10 @@
 """Page 5: Explanations — Reference guide for all metrics and indicators."""
 
 import streamlit as st
+from dashboard.components.styles import apply_custom_css
 
 st.set_page_config(page_title="Explanations", page_icon="📖", layout="wide")
+apply_custom_css()
 st.title("Metric & Indicator Explanations")
 st.markdown("A reference guide for every metric, indicator, and signal used in this dashboard.")
 

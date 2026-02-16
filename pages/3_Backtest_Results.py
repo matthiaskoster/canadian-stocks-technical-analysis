@@ -6,9 +6,11 @@ import pandas as pd
 from data.database import get_performance, get_trades, init_db
 from dashboard.components.charts import create_equity_curve
 from dashboard.components.tables import style_return, format_pct
+from dashboard.components.styles import apply_custom_css
 from config import ALL_STOCKS, TICKERS
 
 st.set_page_config(page_title="Backtest Results", page_icon="📈", layout="wide")
+apply_custom_css()
 st.title("Backtest Results")
 
 init_db()
@@ -95,8 +97,9 @@ if not filtered.empty:
     ))
     fig_wr.add_vline(x=50, line_dash="dash", line_color="gray", opacity=0.5)
     fig_wr.update_layout(
-        title="Average Win Rate by Strategy", height=300, template="plotly_dark",
+        title="Average Win Rate by Strategy", height=300, template="plotly_white",
         xaxis_title="Win Rate %", margin=dict(l=120, r=20, t=40, b=30),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     st.plotly_chart(fig_wr, use_container_width=True)
 

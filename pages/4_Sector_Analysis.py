@@ -8,9 +8,11 @@ from dashboard.components.charts import (
     create_sector_comparison, create_correlation_heatmap,
 )
 from dashboard.components.tables import style_return
+from dashboard.components.styles import apply_custom_css
 from config import SECTORS, ALL_STOCKS, SECTOR_GROUPS, SECTOR_NAMES
 
 st.set_page_config(page_title="Sector Analysis", page_icon="📈", layout="wide")
+apply_custom_css()
 st.title("Sector Analysis")
 
 init_db()

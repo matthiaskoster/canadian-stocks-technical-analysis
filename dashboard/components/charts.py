@@ -106,8 +106,9 @@ def create_candlestick_chart(
 
     fig.update_layout(
         title=title, height=height, xaxis_rangeslider_visible=False,
-        template="plotly_dark", margin=dict(l=50, r=20, t=50, b=30),
+        template="plotly_white", margin=dict(l=50, r=20, t=50, b=30),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -138,9 +139,10 @@ def create_rsi_chart(indicators: pd.DataFrame, height: int = 200) -> go.Figure:
     fig.add_hrect(y0=0, y1=30, fillcolor="green", opacity=0.05)
 
     fig.update_layout(
-        title="RSI", height=height, template="plotly_dark",
+        title="RSI", height=height, template="plotly_white",
         margin=dict(l=50, r=20, t=30, b=20),
         yaxis=dict(range=[0, 100]),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -171,8 +173,9 @@ def create_macd_chart(indicators: pd.DataFrame, height: int = 200) -> go.Figure:
     fig.add_hline(y=0, line_color="gray", opacity=0.3)
 
     fig.update_layout(
-        title="MACD", height=height, template="plotly_dark",
+        title="MACD", height=height, template="plotly_white",
         margin=dict(l=50, r=20, t=30, b=20),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -182,7 +185,8 @@ def create_equity_curve(trades_df: pd.DataFrame, initial_capital: float = 10000,
     fig = go.Figure()
 
     if trades_df.empty or "return_pct" not in trades_df.columns:
-        fig.update_layout(title="Equity Curve (No trades)", height=height, template="plotly_dark")
+        fig.update_layout(title="Equity Curve (No trades)", height=height, template="plotly_white",
+                          paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
         return fig
 
     equity = [initial_capital]
@@ -202,9 +206,10 @@ def create_equity_curve(trades_df: pd.DataFrame, initial_capital: float = 10000,
     fig.add_hline(y=initial_capital, line_dash="dash", line_color="gray", opacity=0.5)
 
     fig.update_layout(
-        title="Equity Curve", height=height, template="plotly_dark",
+        title="Equity Curve", height=height, template="plotly_white",
         margin=dict(l=50, r=20, t=40, b=30),
         yaxis_title="Capital ($)",
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -214,7 +219,8 @@ def create_sector_comparison(perf_df: pd.DataFrame, metric: str = "total_return"
     fig = go.Figure()
 
     if perf_df.empty:
-        fig.update_layout(title="Sector Comparison (No data)", height=height, template="plotly_dark")
+        fig.update_layout(title="Sector Comparison (No data)", height=height, template="plotly_white",
+                          paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
         return fig
 
     from config import SECTORS
@@ -240,9 +246,10 @@ def create_sector_comparison(perf_df: pd.DataFrame, metric: str = "total_return"
 
     label = metric.replace("_", " ").title()
     fig.update_layout(
-        title=f"Average {label} by Sector", height=height, template="plotly_dark",
+        title=f"Average {label} by Sector", height=height, template="plotly_white",
         margin=dict(l=50, r=20, t=50, b=30),
         yaxis_title=label,
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -251,7 +258,8 @@ def create_correlation_heatmap(prices_dict: dict[str, pd.Series], height: int = 
     """Create price correlation matrix heatmap from dict of ticker -> close price series."""
     if not prices_dict:
         fig = go.Figure()
-        fig.update_layout(title="Correlation (No data)", height=height, template="plotly_dark")
+        fig.update_layout(title="Correlation (No data)", height=height, template="plotly_white",
+                          paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
         return fig
 
     df = pd.DataFrame(prices_dict)
@@ -271,7 +279,8 @@ def create_correlation_heatmap(prices_dict: dict[str, pd.Series], height: int = 
     ))
 
     fig.update_layout(
-        title="Return Correlation Matrix", height=height, template="plotly_dark",
+        title="Return Correlation Matrix", height=height, template="plotly_white",
         margin=dict(l=80, r=20, t=50, b=80),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig

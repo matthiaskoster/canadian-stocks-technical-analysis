@@ -5,9 +5,11 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from data.database import get_macro, init_db
+from dashboard.components.styles import apply_custom_css
 from config import FRED_SERIES
 
 st.set_page_config(page_title="Macro Data", page_icon="🏛️", layout="wide")
+apply_custom_css()
 st.title("Macro Dashboard")
 
 init_db()
@@ -102,12 +104,13 @@ for series_id, name in ALL_MACRO.items():
         ysuffix = ""
 
     fig.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         title=name,
         xaxis_title="Date",
         yaxis=dict(tickformat=yformat, ticksuffix=ysuffix),
         height=350,
         margin=dict(l=40, r=20, t=50, b=40),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     st.plotly_chart(fig, use_container_width=True)
 
@@ -154,7 +157,7 @@ if not boc_df.empty:
         ))
 
     fig2.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         title="BoC Rate vs Bank Stocks (indexed to 100)",
         xaxis_title="Date",
         yaxis=dict(title="Stock Price (indexed)", side="left"),
@@ -163,6 +166,7 @@ if not boc_df.empty:
         height=500,
         margin=dict(l=40, r=60, t=50, b=40),
         legend=dict(orientation="h", yanchor="bottom", y=-0.35),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     st.plotly_chart(fig2, use_container_width=True)
 else:

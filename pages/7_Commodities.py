@@ -5,9 +5,11 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from data.database import get_prices, init_db
+from dashboard.components.styles import apply_custom_css
 from config import COMMODITIES, COMMODITY_TICKERS, COMMODITY_STOCK_MAP, ALL_STOCKS
 
 st.set_page_config(page_title="Commodities", page_icon="🛢️", layout="wide")
+apply_custom_css()
 st.title("Commodity Prices")
 
 init_db()
@@ -107,12 +109,13 @@ fig.add_trace(go.Scatter(
     line=dict(color="#00bcd4", width=2),
 ))
 fig.update_layout(
-    template="plotly_dark",
+    template="plotly_white",
     title=f"{COMMODITIES[selected]} — Close Price",
     xaxis_title="Date",
     yaxis_title="Price (USD)",
     height=450,
     margin=dict(l=40, r=20, t=50, b=40),
+    paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
 )
 st.plotly_chart(fig, use_container_width=True)
 
@@ -159,12 +162,13 @@ if related:
         ))
 
     fig2.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         title=f"Normalized Performance (rebased to 100)",
         xaxis_title="Date",
         yaxis_title="Indexed (100 = start)",
         height=500,
         margin=dict(l=40, r=20, t=50, b=40),
         legend=dict(orientation="h", yanchor="bottom", y=-0.3),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )
     st.plotly_chart(fig2, use_container_width=True)

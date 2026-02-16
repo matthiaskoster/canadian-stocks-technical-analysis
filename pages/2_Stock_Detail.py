@@ -7,9 +7,11 @@ from data.database import get_prices, get_indicators, get_signals, init_db
 from dashboard.components.charts import (
     create_candlestick_chart, create_rsi_chart, create_macd_chart,
 )
+from dashboard.components.styles import apply_custom_css
 from config import ALL_STOCKS
 
 st.set_page_config(page_title="Stock Detail", page_icon="📈", layout="wide")
+apply_custom_css()
 st.title("Stock Detail")
 
 init_db()

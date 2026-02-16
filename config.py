@@ -65,10 +65,15 @@ MINING = {
     "DML.TO": "Denison Mines",
 }
 
+OTHER = {
+    "BAM.TO": "Brookfield Asset Management",
+    "BIP-UN.TO": "Brookfield Infrastructure",
+}
+
 # Legacy alias so existing imports of ENERGY still work
 ENERGY = {**OIL_GAS, **PIPELINES}
 
-ALL_STOCKS = {**BANKS, **OIL_GAS, **PIPELINES, **UTILITIES, **TECH, **RAILS, **TELECOM, **MINING}
+ALL_STOCKS = {**BANKS, **OIL_GAS, **PIPELINES, **UTILITIES, **TECH, **RAILS, **TELECOM, **MINING, **OTHER}
 TICKERS = list(ALL_STOCKS.keys())
 
 SECTORS = {}
@@ -88,6 +93,8 @@ for t in TELECOM:
     SECTORS[t] = "Telecom"
 for t in MINING:
     SECTORS[t] = "Mining"
+for t in OTHER:
+    SECTORS[t] = "Other"
 
 SECTOR_GROUPS = [
     ("Banks", BANKS),
@@ -98,6 +105,7 @@ SECTOR_GROUPS = [
     ("Rails", RAILS),
     ("Telecom", TELECOM),
     ("Mining", MINING),
+    ("Other", OTHER),
 ]
 SECTOR_NAMES = [name for name, _ in SECTOR_GROUPS]
 

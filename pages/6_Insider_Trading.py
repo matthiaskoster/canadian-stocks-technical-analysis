@@ -5,9 +5,11 @@ import pandas as pd
 
 from data.database import get_insider_trades, init_db
 from data.data_fetcher import fetch_usdcad_rate
+from dashboard.components.styles import apply_custom_css
 from config import ALL_STOCKS, SECTORS
 
 st.set_page_config(page_title="Insider Trading", page_icon="👔", layout="wide")
+apply_custom_css()
 st.title("Insider Trading Activity")
 
 init_db()

@@ -4,9 +4,11 @@ import streamlit as st
 import pandas as pd
 
 from data.database import get_news, get_earnings, init_db
+from dashboard.components.styles import apply_custom_css
 from config import ALL_STOCKS, SECTORS
 
 st.set_page_config(page_title="News & Calendar", page_icon="📰", layout="wide")
+apply_custom_css()
 st.title("News & Earnings Calendar")
 
 init_db()

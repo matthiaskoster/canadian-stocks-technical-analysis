@@ -8,9 +8,11 @@ from dashboard.components.tables import (
     style_rsi, style_direction, style_macd_status, style_return,
     format_pct, format_price, get_ma_distance, get_macd_status, get_vwap_position,
 )
+from dashboard.components.styles import apply_custom_css
 from config import ALL_STOCKS, SECTORS, SECTOR_NAMES
 
 st.set_page_config(page_title="Live Signals", page_icon="📈", layout="wide")
+apply_custom_css()
 st.title("Live Signals")
 
 init_db()
