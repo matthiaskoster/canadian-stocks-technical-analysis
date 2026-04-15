@@ -73,7 +73,7 @@ for tab, (sector_name, sector_dict) in zip(tabs, SECTOR_GROUPS):
         ticker_avg.columns = ["Name", "Avg Strategy Return %", "Buy & Hold %", "Avg Win Rate %", "Avg Sharpe", "Avg Max DD %"]
         ticker_avg = ticker_avg.sort_values("Avg Sharpe", ascending=False)
 
-        styled = ticker_avg.style.applymap(
+        styled = ticker_avg.style.map(
             style_return, subset=["Avg Strategy Return %", "Buy & Hold %", "Avg Max DD %"]
         ).format({
             "Avg Strategy Return %": "{:+.2f}%",

@@ -58,7 +58,7 @@ if not earnings_df.empty:
             pass
         return ""
 
-    styled = earnings_display.style.applymap(style_upcoming, subset=["Earnings Date"])
+    styled = earnings_display.style.map(style_upcoming, subset=["Earnings Date"])
     st.dataframe(styled, use_container_width=True, hide_index=True)
 else:
     st.info("No earnings data. Run `python3 main.py` to fetch.")

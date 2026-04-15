@@ -179,11 +179,11 @@ for tab, (sector_name, sector_dict) in zip(tabs[:-1], AI_SECTOR_GROUPS):
         df = pd.DataFrame(rows)
         styled = (
             df.style
-            .applymap(style_rsi, subset=["RSI(14)"])
-            .applymap(style_macd_status, subset=["MACD"])
-            .applymap(style_pct_distance, subset=["Dist EMA50", "Dist EMA200"])
-            .applymap(style_vwap, subset=["VWAP"])
-            .applymap(style_earnings, subset=["Earnings"])
+            .map(style_rsi, subset=["RSI(14)"])
+            .map(style_macd_status, subset=["MACD"])
+            .map(style_pct_distance, subset=["Dist EMA50", "Dist EMA200"])
+            .map(style_vwap, subset=["VWAP"])
+            .map(style_earnings, subset=["Earnings"])
             .format({"Price (USD)": "${:.2f}"}, na_rep="—")
         )
         st.dataframe(styled, use_container_width=True, hide_index=True)
@@ -236,11 +236,11 @@ with tabs[-1]:
 
         styled_all = (
             df_all.style
-            .applymap(style_rsi, subset=["RSI(14)"])
-            .applymap(style_macd_status, subset=["MACD"])
-            .applymap(style_pct_distance, subset=["Dist EMA50", "Dist EMA200"])
-            .applymap(style_vwap, subset=["VWAP"])
-            .applymap(style_earnings, subset=["Earnings"])
+            .map(style_rsi, subset=["RSI(14)"])
+            .map(style_macd_status, subset=["MACD"])
+            .map(style_pct_distance, subset=["Dist EMA50", "Dist EMA200"])
+            .map(style_vwap, subset=["VWAP"])
+            .map(style_earnings, subset=["Earnings"])
             .format({"Price (USD)": "${:.2f}"}, na_rep="—")
         )
         st.dataframe(styled_all, use_container_width=True, hide_index=True, height=700)
@@ -260,7 +260,7 @@ if not ai_signals.empty:
 
     styled_sig = (
         sig_display.head(50).style
-        .applymap(style_direction, subset=["Direction"])
+        .map(style_direction, subset=["Direction"])
         .format({"Price (USD)": "${:.2f}"}, na_rep="—")
     )
     st.dataframe(styled_sig, use_container_width=True, hide_index=True)

@@ -201,7 +201,7 @@ if not perf_df.empty:
 
     styled_perf = perf_display.style
     for col in pct_cols:
-        styled_perf = styled_perf.applymap(style_return, subset=[col])
+        styled_perf = styled_perf.map(style_return, subset=[col])
     styled_perf = styled_perf.format(
         {c: "{:.1f}%" for c in pct_cols},
         na_rep="—",
@@ -220,7 +220,7 @@ if not signals.empty:
     sig_table.columns = ["Date", "Signal", "Direction", "Price (USD)", "Strategy"]
     styled_sig = (
         sig_table.head(20).style
-        .applymap(style_direction, subset=["Direction"])
+        .map(style_direction, subset=["Direction"])
         .format({"Price (USD)": "${:.2f}"}, na_rep="—")
     )
     st.dataframe(styled_sig, use_container_width=True, hide_index=True)

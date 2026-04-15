@@ -334,9 +334,9 @@ display_df = pf[display_cols].copy()
 
 styled = (
     display_df.style
-    .applymap(color_pnl, subset=["P&L", "Return %"])
-    .applymap(color_status, subset=["Status"])
-    .applymap(color_double, subset=["Double"])
+    .map(color_pnl, subset=["P&L", "Return %"])
+    .map(color_status, subset=["Status"])
+    .map(color_double, subset=["Double"])
     .format(
         {
             "Entry $": "${:.2f}",
@@ -390,7 +390,7 @@ with col_left:
     ticker_stats = ticker_stats.sort_values("Total_PnL", ascending=False)
     ticker_styled = (
         ticker_stats.style
-        .applymap(color_pnl, subset=["Total_PnL", "Avg_Return"])
+        .map(color_pnl, subset=["Total_PnL", "Avg_Return"])
         .format({"Total_PnL": "${:+,.0f}", "Avg_Return": "{:+.1f}%", "Win %": "{:.0f}%"})
     )
     st.dataframe(ticker_styled, use_container_width=True, hide_index=True)
@@ -411,7 +411,7 @@ with col_right:
     sector_stats = sector_stats.sort_values("Total_PnL", ascending=False)
     sector_styled = (
         sector_stats.style
-        .applymap(color_pnl, subset=["Total_PnL", "Avg_Return"])
+        .map(color_pnl, subset=["Total_PnL", "Avg_Return"])
         .format({"Total_PnL": "${:+,.0f}", "Avg_Return": "{:+.1f}%", "Win %": "{:.0f}%"})
     )
     st.dataframe(sector_styled, use_container_width=True, hide_index=True)
@@ -427,8 +427,8 @@ if not doubles.empty:
     double_display = doubles[display_cols].copy()
     double_styled = (
         double_display.style
-        .applymap(color_pnl, subset=["P&L", "Return %"])
-        .applymap(color_status, subset=["Status"])
+        .map(color_pnl, subset=["P&L", "Return %"])
+        .map(color_status, subset=["Status"])
         .format(
             {
                 "Entry $": "${:.2f}",

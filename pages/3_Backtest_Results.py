@@ -65,7 +65,7 @@ detail.columns = ["Ticker", "Strategy", "Trades", "Win Rate %", "Avg Gain %",
                    "Avg Loss %", "Risk/Reward", "Max DD %", "Strategy Return %",
                    "Buy & Hold %", "Sharpe"]
 
-styled = detail.style.applymap(
+styled = detail.style.map(
     style_return, subset=["Strategy Return %", "Buy & Hold %", "Max DD %"]
 ).format({
     "Win Rate %": "{:.1f}%",

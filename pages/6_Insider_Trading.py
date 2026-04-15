@@ -153,7 +153,7 @@ if summary_rows:
             return "color: #ff1744"
         return ""
 
-    styled_summary = summary_df.style.applymap(style_sentiment, subset=["Net Sentiment"])
+    styled_summary = summary_df.style.map(style_sentiment, subset=["Net Sentiment"])
     styled_summary = styled_summary.format({
         "Buy Value (CAD)": "${:,.0f}",
         "Sell Value (CAD)": "${:,.0f}",
@@ -177,7 +177,7 @@ if not filtered.empty:
             return "color: #ff1744"
         return ""
 
-    styled_detail = display_df.style.applymap(style_direction, subset=["Direction"])
+    styled_detail = display_df.style.map(style_direction, subset=["Direction"])
     styled_detail = styled_detail.format({
         "Shares": "{:,.0f}",
         "CAD/Share": "${:,.2f}",

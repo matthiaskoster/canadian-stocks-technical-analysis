@@ -75,8 +75,8 @@ for _, price_row in prices.iterrows():
 overview_df = pd.DataFrame(rows)
 
 if not overview_df.empty:
-    styled = overview_df.style.applymap(style_rsi, subset=["RSI(14)"])
-    styled = styled.applymap(style_macd_status, subset=["MACD"])
+    styled = overview_df.style.map(style_rsi, subset=["RSI(14)"])
+    styled = styled.map(style_macd_status, subset=["MACD"])
     styled = styled.format({"Price": "${:.2f}"}, na_rep="—")
     st.dataframe(styled, use_container_width=True, hide_index=True, height=700)
 else:
@@ -90,7 +90,7 @@ if not signals.empty:
     sig_display["date"] = sig_display["date"].dt.strftime("%Y-%m-%d")
     sig_display.columns = ["Date", "Ticker", "Signal", "Direction", "Price", "Strategy"]
 
-    styled_sig = sig_display.head(50).style.applymap(style_direction, subset=["Direction"])
+    styled_sig = sig_display.head(50).style.map(style_direction, subset=["Direction"])
     styled_sig = styled_sig.format({"Price": "${:.2f}"}, na_rep="—")
     st.dataframe(styled_sig, use_container_width=True, hide_index=True)
 else:

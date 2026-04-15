@@ -74,7 +74,7 @@ if summary_rows:
             return "color: #ff1744"
         return ""
 
-    styled = summary_df.style.applymap(
+    styled = summary_df.style.map(
         style_change, subset=["Daily Chg %", "1W Chg %"]
     ).format({
         "Price": "${:,.2f}",
