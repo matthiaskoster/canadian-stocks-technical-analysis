@@ -1,10 +1,11 @@
-"""Main orchestration script for Canadian stock technical analysis."""
+"""Main orchestration script for stock technical analysis (Canadian + US AI)."""
 
 import argparse
 import time
 from datetime import date, timedelta
 
-from config import TICKERS, ALL_STOCKS, COMMODITY_TICKERS, COMMODITIES, FRED_SERIES
+from config import TICKERS, ALL_STOCKS, COMMODITY_TICKERS, COMMODITIES, FRED_SERIES, \
+    AI_TICKERS, COMBINED_TICKERS
 from data.data_fetcher import (
     fetch_stock_data, fetch_all_stocks, fetch_insider_trades,
     fetch_news, fetch_earnings_date, fetch_fred_series, fetch_boc_rate,
@@ -233,20 +234,29 @@ def run_pipeline(tickers: list[str], fetch: bool = True, force: bool = False):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Canadian Large-Cap Stock Technical Analysis"
+        description="Stock Technical Analysis — Canadian + US AI"
     )
     parser.add_argument("--fetch-only", action="store_true", help="Only fetch data, no analysis")
     parser.add_argument("--no-fetch", action="store_true", help="Skip data fetching, use cached")
     parser.add_argument("--force", action="store_true", help="Force re-fetch even if data is current")
-    parser.add_argument("--ticker", type=str, help="Run for a single ticker (e.g. RY.TO)")
+    parser.add_argument("--ticker", type=str, help="Run for a single ticker (e.g. RY.TO or NVDA)")
+    parser.add_argument(
+        "--universe", type=str, default="all",
+        choices=["all", "canadian", "ai"],
+        help="Which universe to process: all (default), canadian, or ai",
+    )
     args = parser.parse_args()
 
     start = time.time()
 
     if args.ticker:
         tickers = [args.ticker]
-    else:
+    elif args.universe == "canadian":
         tickers = TICKERS
+    elif args.universe == "ai":
+        tickers = AI_TICKERS
+    else:
+        tickers = COMBINED_TICKERS
 
     if args.fetch_only:
         init_db()

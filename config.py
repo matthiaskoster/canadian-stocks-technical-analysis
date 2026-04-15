@@ -109,6 +109,140 @@ SECTOR_GROUPS = [
 ]
 SECTOR_NAMES = [name for name, _ in SECTOR_GROUPS]
 
+# ── US AI Stock Universe ──────────────────────────────────────────────────────
+# Prices remain in USD — no currency conversion applied.
+
+AI_SEMICONDUCTORS = {
+    "NVDA": "NVIDIA",
+    "AMD": "Advanced Micro Devices",
+    "INTC": "Intel",
+    "QCOM": "Qualcomm",
+    "AVGO": "Broadcom",
+    "ASML": "ASML Holding",
+    "MRVL": "Marvell Technology",
+    "TSM": "Taiwan Semiconductor (ADR)",
+    "HYIX": "SK Hynix (ADR)",
+    "MU": "Micron Technology",
+}
+
+AI_HYPERSCALERS = {
+    "MSFT": "Microsoft",
+    "GOOGL": "Alphabet",
+    "AMZN": "Amazon",
+    "META": "Meta",
+    "AAPL": "Apple",
+    "TSLA": "Tesla",
+    "ORCL": "Oracle",
+}
+
+AI_ANALYTICS = {
+    "PLTR": "Palantir Technologies",
+    "CRWD": "CrowdStrike",
+    "NET": "Cloudflare",
+    "UPST": "Upstart Holdings",
+    "SNOW": "Snowflake",
+    "PANW": "Palo Alto Networks",
+}
+
+AI_SOFTWARE = {
+    "CRM": "Salesforce",
+    "ADBE": "Adobe",
+    "APP": "AppLovin",
+    "SMCI": "Super Micro Computer",
+    "DELL": "Dell Technologies",
+}
+
+AI_EDA = {
+    "SNPS": "Synopsys",
+    "CDNS": "Cadence Design Systems",
+}
+
+AI_INFRASTRUCTURE = {
+    "CRWV": "CoreWeave",
+    "NBIS": "Nebius Group",
+}
+
+AI_MEMORY = {
+    "SNDK": "SanDisk",
+    "WDC": "Western Digital",
+    "STX": "Seagate Technology",
+    "CRSR": "Corsair",
+}
+
+AI_NETWORKING = {
+    "ANET": "Arista Networks",
+    "CSCO": "Cisco",
+    "JNPR": "Juniper Networks",
+}
+
+AI_CHIPSET = {
+    "RMBS": "Rambus",
+    "SLAB": "Silicon Labs",
+    "MTSI": "MACOM Technology",
+    "PCTEL": "PC-Tel",
+    "CRUS": "Cirrus Logic",
+}
+
+AI_MISC = {
+    "IREN": "Iris Energy",
+    "CLSK": "CleanSpark",
+}
+
+AI_ALL_STOCKS = {
+    **AI_SEMICONDUCTORS,
+    **AI_HYPERSCALERS,
+    **AI_ANALYTICS,
+    **AI_SOFTWARE,
+    **AI_EDA,
+    **AI_INFRASTRUCTURE,
+    **AI_MEMORY,
+    **AI_NETWORKING,
+    **AI_CHIPSET,
+    **AI_MISC,
+}
+
+AI_TICKERS = list(AI_ALL_STOCKS.keys())
+
+AI_SECTORS = {}
+for t in AI_SEMICONDUCTORS:
+    AI_SECTORS[t] = "Semiconductors"
+for t in AI_HYPERSCALERS:
+    AI_SECTORS[t] = "Hyperscalers"
+for t in AI_ANALYTICS:
+    AI_SECTORS[t] = "Analytics"
+for t in AI_SOFTWARE:
+    AI_SECTORS[t] = "AI Software"
+for t in AI_EDA:
+    AI_SECTORS[t] = "EDA Tools"
+for t in AI_INFRASTRUCTURE:
+    AI_SECTORS[t] = "AI Infrastructure"
+for t in AI_MEMORY:
+    AI_SECTORS[t] = "Memory & Storage"
+for t in AI_NETWORKING:
+    AI_SECTORS[t] = "Networking"
+for t in AI_CHIPSET:
+    AI_SECTORS[t] = "Chipset Ecosystem"
+for t in AI_MISC:
+    AI_SECTORS[t] = "Misc AI"
+
+AI_SECTOR_GROUPS = [
+    ("Semiconductors", AI_SEMICONDUCTORS),
+    ("Hyperscalers", AI_HYPERSCALERS),
+    ("Analytics", AI_ANALYTICS),
+    ("AI Software", AI_SOFTWARE),
+    ("EDA Tools", AI_EDA),
+    ("AI Infrastructure", AI_INFRASTRUCTURE),
+    ("Memory & Storage", AI_MEMORY),
+    ("Networking", AI_NETWORKING),
+    ("Chipset Ecosystem", AI_CHIPSET),
+    ("Misc AI", AI_MISC),
+]
+
+AI_SECTOR_NAMES = [name for name, _ in AI_SECTOR_GROUPS]
+
+# Combined ticker list for the full pipeline (Canadian + US AI)
+COMBINED_TICKERS = TICKERS + AI_TICKERS
+
 # Commodity tickers (fetched into stock_prices table alongside stocks)
 COMMODITIES = {
     "GC=F": "Gold",
